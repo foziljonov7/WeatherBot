@@ -1,5 +1,6 @@
 using Telegram.Bot;
 using Telegram.Bot.Polling;
+using Telegram.Bot.Types.Enums;
 
 public class BotBackgroundTask : BackgroundService
 {
@@ -11,7 +12,7 @@ public class BotBackgroundTask : BackgroundService
         ILogger<BotBackgroundTask> logger,
         ITelegramBotClient botClient,
         IUpdateHandler updateHandler)
-    {
+    {  
         this.logger = logger;
         this.botClient = botClient;
         this.updateHandler = updateHandler;
@@ -23,7 +24,16 @@ public class BotBackgroundTask : BackgroundService
 
         botClient.StartReceiving(
             updateHandler: updateHandler,
-            receiverOptions: default,
+            receiverOptions: new ReceiverOptions
+            {
+                ThrowPendingUpdates = true,
+                AllowedUpdates = new []
+                {
+                    UpdateType.Message,
+                    UpdateType.EditedMessage,
+                    UpdateType.CallbackQuery
+                }
+            },
             cancellationToken: stoppingToken);
 
         //await botClient.ReceiveAsync(updateHandler.HandleUpdateAsync, updateHandler.HandlePollingErrorAsync, default);
