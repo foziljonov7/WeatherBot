@@ -15,6 +15,7 @@ public partial class UpdateHandler
             await RemoveMessageAsync(botClient, message.Chat.Id, locationRequestMessages[message.Chat.Id]);
             locationRequestMessages.Remove(message.Chat.Id);
         }
+        
 
         if(message.Text == "/start")
         {
